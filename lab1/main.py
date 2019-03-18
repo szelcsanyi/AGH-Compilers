@@ -12,14 +12,14 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # load input
-    input = file.read()
+    text = file.read()
 
     # tokenize
-    tokens = scanner.tokenize(input)
+    tokens = scanner.tokenize(text)
 
     # display
     print(tabulate(
-        [(t.lineno, scanner.find_column(input, t), t.type, t.value) for t in tokens],
-        headers = ("row", "col", "type", "value"),
+        [(t.lineno, scanner.find_column(text, t), t.type, t.value) for t in tokens],
+        headers=("row", "col", "type", "value"),
         tablefmt="fancy_grid"
     ))
