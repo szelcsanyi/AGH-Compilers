@@ -3,21 +3,25 @@ import ply.yacc as yacc
 
 
 # ==============================================
+#   PRECEDENCE
+# ==============================================
+precedence = (
+    ("nonassoc", "IF"),
+    ("nonassoc", "EQUALS", "NOT_EQUALS", "GREATER", "LESS", "GREATER_EQUAL", "LESS_EQUAL"),
+    ("left", "PLUS", "MINUS", "DOT_PLUS", "DOT_MINUS"),
+    ("left", "TIMES", "DIVIDE", "DOT_TIMES", "DOT_DIVIDE"),
+    ("right", "UNARY_MINUS"),
+    ("nonassoc", "APOSTROPHE")
+)
+
+
+# ==============================================
 #   HELPERS
 # ==============================================
 def p_comma_list(p):
     """ comma_list : expression
                    | comma_list COMMA expression
     """
-
-
-# ==============================================
-#   PRECEDENCE
-# ==============================================
-precedence = (  # TODO
-    ("left", "PLUS", "MINUS", "DOT_PLUS", "DOT_MINUS"),
-    ("left", "TIMES", "DIVIDE", "DOT_TIMES", "DOT_DIVIDE")
-)
 
 
 # ==============================================
@@ -49,7 +53,7 @@ def p_expression_terminal(p):
 
 
 def p_expression_left_unary_operator(p):
-    """ expression : MINUS expression """
+    """ expression : MINUS expression %prec UNARY_MINUS """
 
 
 def p_expression_right_unary_operator(p):
@@ -152,7 +156,7 @@ def p_if_else_if(p):
 
 
 def p_if(p):
-    """ if : IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement """
+    """ if : IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement %prec IF """
 
 
 # ==============================================
@@ -160,7 +164,7 @@ def p_if(p):
 # ==============================================
 def p_error(p):
     if p:
-        print(f'Syntax error at {p.lineno}:? - LexToken({p.type}, \'{p.value}\')')
+        print(f'Syntax error at line {p.lineno}? - LexToken({p.type}, \'{p.value}\')')
     else:
         print("Unexpected end of input")
 
