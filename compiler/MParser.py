@@ -17,11 +17,11 @@ def MParser():
     #   STATEMENTS
     # ==============================================
     def p_statement_assignment(p):
-        """ statement : ID ASSIGN expression SEMICOLON
-                      | ID ASSIGN_PLUS expression SEMICOLON
-                      | ID ASSIGN_MINUS expression SEMICOLON
-                      | ID ASSIGN_TIMES expression SEMICOLON
-                      | ID ASSIGN_DIVIDE expression SEMICOLON
+        """ statement : variable ASSIGN expression SEMICOLON
+                      | variable ASSIGN_PLUS expression SEMICOLON
+                      | variable ASSIGN_MINUS expression SEMICOLON
+                      | variable ASSIGN_TIMES expression SEMICOLON
+                      | variable ASSIGN_DIVIDE expression SEMICOLON
         """
 
     def p_statement_block(p):
@@ -96,6 +96,9 @@ def MParser():
                         | matrix_body SEMICOLON comma_list
         """
 
+    def p_expression_selector(p):
+        """ expression : expression selector """
+
     # ==============================================
     #   TERMINALS
     # ==============================================
@@ -117,10 +120,18 @@ def MParser():
     # ==============================================
     #   HELPERS
     # ==============================================
+    def p_variable(p):
+        """ variable : ID
+                     | ID selector
+        """
+
     def p_comma_list(p):
         """ comma_list : expression
                        | comma_list COMMA expression
         """
+
+    def p_selector(p):
+        """ selector : BRACKET_SQUARE_L comma_list BRACKET_SQUARE_R """
 
     # ==============================================
     #   ERRORS
