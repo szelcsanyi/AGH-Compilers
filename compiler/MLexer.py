@@ -59,11 +59,6 @@ def MLexer():
         "print": "PRINT"
     }
 
-    # comments
-    def t_COMMENT(token):
-        r"""\#.*"""
-        pass
-
     # identifiers
     def t_ID(token):
         r"""[a-zA-Z_][a-zA-Z0-9_]*"""
@@ -91,8 +86,9 @@ def MLexer():
     # generate list of tokens
     tokens = list(map(lambda x: x[2:], filter(lambda x: x.startswith("t_"), dir()))) + list(reserved.values())
 
-    # ignored characters
+    # ignored input
     t_ignore = ' \t'
+    t_ignore_COMMENT = r'\#.*'
 
     # new lines and line number handling
     def t_newline(token):
