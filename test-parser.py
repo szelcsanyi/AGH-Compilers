@@ -1,6 +1,6 @@
 import sys
-import scanner
-import parser
+
+from compiler import MParser, MLexer
 
 if __name__ == '__main__':
 
@@ -14,5 +14,5 @@ if __name__ == '__main__':
     # load input
     text = file.read()
 
-    # parse
-    parser.parse(text)
+    parser = MParser()
+    parser.parse(text, lexer=MLexer())
