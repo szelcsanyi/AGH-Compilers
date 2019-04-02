@@ -1,6 +1,8 @@
 import sys
-import scanner
+
 from tabulate import tabulate
+
+from compiler import MScanner
 
 if __name__ == '__main__':
 
@@ -11,15 +13,12 @@ if __name__ == '__main__':
         print("Cannot open {0} file".format(sys.argv[1]))
         sys.exit(0)
 
-    # load input
-    text = file.read()
-
-    # tokenize
-    tokens = scanner.tokenize(text)
+    # tokenize input
+    tokens = MScanner().tokenize(file.read())
 
     # display
     print(tabulate(
-        [(t.lineno, scanner.find_column(text, t), t.type, t.value) for t in tokens],
+        [(t.lineno, t.columnno, t.type, t.value) for t in tokens],
         headers=("row", "col", "type", "value"),
         tablefmt="fancy_grid"
     ))
