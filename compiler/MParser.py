@@ -30,7 +30,7 @@ def MParser():
         """
 
     def p_statement_print(p):
-        """ statement : PRINT comma_list SEMICOLON """
+        """ statement : PRINT vector SEMICOLON """
 
     def p_statement_break(p):
         """ statement : BREAK SEMICOLON """
@@ -85,15 +85,15 @@ def MParser():
         """
 
     def p_expression_function(p):
-        """ expression : function BRACKET_ROUND_L comma_list BRACKET_ROUND_R
+        """ expression : function BRACKET_ROUND_L vector BRACKET_ROUND_R
         """
 
     def p_expression_matrix(p):
         """ expression : BRACKET_SQUARE_L matrix_body BRACKET_SQUARE_R """
 
     def p_expression_matrix_body(p):
-        """ matrix_body : comma_list
-                        | matrix_body SEMICOLON comma_list
+        """ matrix_body : vector
+                        | matrix_body SEMICOLON vector
         """
 
     def p_expression_selector(p):
@@ -125,13 +125,13 @@ def MParser():
                      | ID selector
         """
 
-    def p_comma_list(p):
-        """ comma_list : expression
-                       | comma_list COMMA expression
+    def p_vector(p):
+        """ vector : expression
+                   | vector COMMA expression
         """
 
     def p_selector(p):
-        """ selector : BRACKET_SQUARE_L comma_list BRACKET_SQUARE_R """
+        """ selector : BRACKET_SQUARE_L vector BRACKET_SQUARE_R """
 
     # ==============================================
     #   ERRORS
