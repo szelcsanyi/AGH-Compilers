@@ -37,7 +37,7 @@ def MParser():
 
     def p_statement_print(p):
         """ statement : PRINT comma_list SEMICOLON """
-        p[0] = InstructionStatement(p[1], *p[1])
+        p[0] = InstructionStatement(p[1], *p[2])
 
     def p_statement_break(p):
         """ statement : BREAK SEMICOLON """
@@ -81,7 +81,7 @@ def MParser():
 
     def p_expression_right_unary_operator(p):
         """ expression : expression APOSTROPHE %prec TRANSPOSE """
-        p[0] = OperatorExpression(p[2], Identifier(p[1]))
+        p[0] = OperatorExpression(p[2], p[1])
 
     def p_expression_binary_operator(p):
         """ expression : expression PLUS expression
@@ -158,6 +158,7 @@ def MParser():
             print(f'[parser] [line {p.lineno}] Unexpected token ({p.type}, \'{p.value}\')', file=sys.stderr)
         else:
             print(f'[parser] Unexpected end of input', file=sys.stderr)
+        sys.exit()
 
     # ==============================================
     #   PRECEDENCE
