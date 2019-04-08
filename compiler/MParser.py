@@ -3,6 +3,7 @@ import sys
 from ply import yacc
 
 from compiler import MLexer
+from compiler.AST import *
 
 
 def MParser():
@@ -10,10 +11,13 @@ def MParser():
     # ==============================================
     #   PROGRAM
     # ==============================================
-    def p_program(p):
-        """ program : statement
-                    | program statement
-        """
+    def p_program_head(p):
+        """ program : """
+        p[0] = ProgramStatement()
+
+    def p_program_tail(p):
+        """ program : statement program """
+        p[0] = ProgramStatement(p[1], *p[2].statements)
 
     # ==============================================
     #   STATEMENTS
@@ -25,46 +29,59 @@ def MParser():
                       | variable ASSIGN_TIMES expression SEMICOLON
                       | variable ASSIGN_DIVIDE expression SEMICOLON
         """
+        p[0] = AssignmentStatement(p[2], p[1], p[3])
 
     def p_statement_block(p):
-        """ statement : BRACKET_CURLY_L program BRACKET_CURLY_R
-                      | BRACKET_CURLY_L BRACKET_CURLY_R
-        """
+        """ statement : BRACKET_CURLY_L program BRACKET_CURLY_R """
+        p[0] = p[2]
 
     def p_statement_print(p):
-        """ statement : PRINT vector SEMICOLON """
+        """ statement : PRINT comma_list SEMICOLON """
+        p[0] = InstructionStatement(p[1], *p[1])
 
     def p_statement_break(p):
         """ statement : BREAK SEMICOLON """
+        p[0] = InstructionStatement(p[1])
 
     def p_statement_continue(p):
         """ statement : CONTINUE SEMICOLON """
+        p[0] = InstructionStatement(p[1])
 
     def p_statement_return(p):
         """ statement : RETURN expression SEMICOLON """
+        p[0] = InstructionStatement(p[1], p[2])
 
     def p_statement_while(p):
         """ statement : WHILE BRACKET_ROUND_L expression BRACKET_ROUND_R statement """
+        p[0] = WhileStatement(p[3], p[5])
 
     def p_statement_for(p):
-        """ statement : FOR ID ASSIGN expression COLON expression statement """
+        """ statement : FOR ID ASSIGN range statement """
+        p[0] = ForStatement(Identifier(p[2]), p[4], p[5])
 
     def p_statement_if(p):
         """ statement : IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement %prec SIMPLE_IF
                       | IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement ELSE statement
         """
+        p[0] = IfStatement(p[3], p[5], p[7] if len(p) > 7 else None)
 
     # ==============================================
     #   EXPRESSIONS
     # ==============================================
-    def p_expression_terminal(p):
-        """ expression : terminal """
+    def p_expression_constant(p):
+        """ expression : INT
+                       | FLOAT
+                       | STRING
+        """
+        p[0] = ConstantExpression(p[1])
 
     def p_expression_left_unary_operator(p):
         """ expression : MINUS expression %prec UNARY_MINUS """
+        p[0] = OperatorExpression(p[1], p[2])
 
     def p_expression_right_unary_operator(p):
         """ expression : expression APOSTROPHE %prec TRANSPOSE """
+        p[0] = OperatorExpression(p[2], Identifier(p[1]))
 
     def p_expression_binary_operator(p):
         """ expression : expression PLUS expression
@@ -75,65 +92,63 @@ def MParser():
                        | expression DOT_MINUS expression
                        | expression DOT_TIMES expression
                        | expression DOT_DIVIDE expression
-        """
-
-    def p_expression_comparator(p):
-        """ expression : expression EQUALS expression
+                       | expression EQUALS expression
                        | expression NOT_EQUALS expression
                        | expression GREATER expression
                        | expression LESS expression
                        | expression GREATER_EQUAL expression
                        | expression LESS_EQUAL expression
         """
+        p[0] = OperatorExpression(p[2], p[1], p[3])
 
     def p_expression_function(p):
-        """ expression : function BRACKET_ROUND_L vector BRACKET_ROUND_R
-        """
+        """ expression : function BRACKET_ROUND_L comma_list BRACKET_ROUND_R """
+        p[0] = FunctionExpression(p[1], *p[3])
 
-    def p_expression_matrix(p):
-        """ expression : BRACKET_SQUARE_L matrix_body BRACKET_SQUARE_R """
+    def p_expression_vector(p):
+        """ expression : vector """
+        p[0] = p[1]
 
-    def p_expression_matrix_body(p):
-        """ matrix_body : vector
-                        | matrix_body SEMICOLON vector
-        """
-
-    def p_expression_selector(p):
-        """ expression : expression selector """
+    def p_expression_variable(p):
+        """ expression : variable """
+        p[0] = p[1]
 
     # ==============================================
-    #   TERMINALS
+    #   VARIABLES
     # ==============================================
-    def p_terminal_constant(p):
-        """ terminal : INT
-                     | FLOAT
-                     | STRING
-        """
+    def p_variable_id(p):
+        """ variable : ID """
+        p[0] = Identifier(p[1])
 
-    def p_terminal_id(p):
-        """ terminal : ID """
+    def p_variable_selector(p):
+        """ variable : ID vector """
+        p[0] = Selector(Identifier(p[1]), p[2])
 
+    # ==============================================
+    #   HELPERS
+    # ==============================================
     def p_function(p):
         """ function : EYE
                      | ZEROS
                      | ONES
         """
-
-    # ==============================================
-    #   HELPERS
-    # ==============================================
-    def p_variable(p):
-        """ variable : ID
-                     | ID selector
-        """
+        p[0] = p[1]
 
     def p_vector(p):
-        """ vector : expression
-                   | vector COMMA expression
-        """
+        """ vector : BRACKET_SQUARE_L comma_list BRACKET_SQUARE_R """
+        p[0] = VectorExpression(*p[2])
 
-    def p_selector(p):
-        """ selector : BRACKET_SQUARE_L vector BRACKET_SQUARE_R """
+    def p_comma_list_head(p):
+        """ comma_list : expression """
+        p[0] = [p[1]]
+
+    def p_comma_list(p):
+        """ comma_list : comma_list COMMA expression  """
+        p[0] = p[1] + [p[3]]
+
+    def p_range(p):
+        """ range : expression COLON expression """
+        p[0] = RangeExpression(p[1], p[3])
 
     # ==============================================
     #   ERRORS
