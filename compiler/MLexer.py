@@ -1,3 +1,5 @@
+import sys
+
 import ply.lex as lex
 
 
@@ -97,7 +99,7 @@ def MLexer():
 
     # errors handling
     def t_error(token):
-        print(f"Illegal character {token.value[0]}")
+        print(f"[lexer] [line {token.lineno}] Skipped illegal character '{token.value[0]}'", file=sys.stderr)
         token.lexer.skip(1)
 
     return lex.lex()

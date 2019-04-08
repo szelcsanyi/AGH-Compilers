@@ -1,3 +1,5 @@
+import sys
+
 from ply import yacc
 
 from compiler import MLexer
@@ -138,9 +140,9 @@ def MParser():
     # ==============================================
     def p_error(p):
         if p:
-            print(f'Syntax error at line {p.lineno}? - LexToken({p.type}, \'{p.value}\')')
+            print(f'[parser] [line {p.lineno}] Unexpected token ({p.type}, \'{p.value}\')', file=sys.stderr)
         else:
-            print("Unexpected end of input")
+            print(f'[parser] Unexpected end of input', file=sys.stderr)
 
     # ==============================================
     #   PRECEDENCE
