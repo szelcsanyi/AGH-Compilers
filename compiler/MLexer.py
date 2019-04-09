@@ -99,7 +99,13 @@ def MLexer():
 
     # errors handling
     def t_error(token):
-        print(f"[lexer] [line {token.lineno}] Skipped illegal character '{token.value[0]}'", file=sys.stderr)
-        token.lexer.skip(1)
+        raise LexerError(token)
 
     return lex.lex()
+
+
+class LexerError(Exception):
+    def __init__(self, token):
+        super().__init__(f"Illegal character '{token.value[0]}' at line {token.lineno}")
+
+        self.token = token

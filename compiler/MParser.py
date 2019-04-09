@@ -154,11 +154,7 @@ def MParser():
     #   ERRORS
     # ==============================================
     def p_error(p):
-        if p:
-            print(f'[parser] [line {p.lineno}] Unexpected token ({p.type}, \'{p.value}\')', file=sys.stderr)
-        else:
-            print(f'[parser] Unexpected end of input', file=sys.stderr)
-        sys.exit()
+        raise ParserError(p)
 
     # ==============================================
     #   PRECEDENCE
@@ -181,3 +177,13 @@ def MParser():
     start = "program"
 
     return yacc.yacc()
+
+
+class ParserError(Exception):
+    def __init__(self, production):
+        if production:
+            super().__init__(f"Unexpected token ({production.type}, '{production.value}') at line {production.lineno}")
+        else:
+            super().__init__("Unexpected end of input")
+
+        self.production = production
