@@ -1,4 +1,4 @@
-from .MLexer import MLexer
+from .MLexer import MLexer, LexerError
 from .MScanner import MScanner
-from .MParser import MParser
+from .MParser import MParser, ParserError
 from .printer import get_ast_tree
