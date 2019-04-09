@@ -69,8 +69,8 @@ def MLexer():
 
     # strings
     def t_STRING(token):
-        r""""([^"\n]|(\\"))*\""""
-        token.value = token.value[1:-1]
+        r"""\"(\\.|[^\"])*\""""
+        token.value = token.value[1:-1].replace('\\"', '"')
         return token
 
     # float number
