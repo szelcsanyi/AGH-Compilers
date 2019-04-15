@@ -19,6 +19,19 @@ def addToClass(cls):
     return decorator
 
 
+class TmpNode:
+    def __init__(self, name, *children):
+        self.name = name
+        self.children = children
+        self.linespan = children[0].linespan
+
+    def get_ast_name(self):
+        return self.name
+
+    def get_ast_children(self):
+        return self.children
+
+
 @addToClass(AST.ProgramStatement)
 def get_ast_name(self):
     return '┐'
@@ -76,7 +89,7 @@ def get_ast_name(self):
 
 @addToClass(AST.IfStatement)
 def get_ast_children(self):
-    return [self.condition, self.statement_then] + [self.statement_else] if self.statement_else else []
+    return [self.condition, TmpNode('THEN', self.statement_then)] + [TmpNode('ELSE', self.statement_else)] if self.statement_else else []
 
 
 @addToClass(AST.OperatorExpression)
