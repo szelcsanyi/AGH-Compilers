@@ -3,6 +3,11 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
+[scripts]
+scanner = python3 demo-scanner.py
+parser = python3 demo-parser.py
+ast = python3 demo-ast.py
+
 [dev-packages]
 tree-format = "*"
 colored = "*"
