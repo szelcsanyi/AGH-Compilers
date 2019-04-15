@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 tree-format = "*"
+colored = "*"
 
 [packages]
 ply = "*"

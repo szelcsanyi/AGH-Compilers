@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     # parse
     parser = MParser()
-    root = parser.parse(text, lexer=MLexer())
+    root = parser.parse(text, lexer=MLexer(), tracking=True)
 
     # print
     print(get_ast_tree(root))
