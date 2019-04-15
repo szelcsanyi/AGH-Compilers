@@ -79,9 +79,9 @@ def MParser():
         """ expression : MINUS expression %prec UNARY_MINUS """
         p[0] = OperatorExpression(p, p[1], p[2])
 
-    def p_expression_right_unary_operator(p):
-        """ expression : expression APOSTROPHE %prec TRANSPOSE """
-        p[0] = OperatorExpression(p, p[2], p[1])
+    def p_expression_transpose(p):
+        """ expression : ID APOSTROPHE %prec TRANSPOSE """
+        p[0] = OperatorExpression(p, p[2], Identifier(p, p[1]))
 
     def p_expression_binary_operator(p):
         """ expression : expression PLUS expression
