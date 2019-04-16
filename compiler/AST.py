@@ -1,109 +1,104 @@
 from abc import ABC
+from dataclasses import dataclass
+from typing import Any, List
+
+from ply.yacc import YaccProduction
 
 
+# ==============================================
+#   ABSTRACT
+# ==============================================
+@dataclass
 class Node(ABC):
-    def __init__(self, production):
-        self.linespan = production.linespan(0)
+    production: YaccProduction
 
 
-class ProgramStatement(Node):
-    def __init__(self, production, *statements):
-        super().__init__(production)
-
-        self.statements = statements
+class Expression(Node):
+    pass
 
 
-class AssignmentStatement(Node):
-    def __init__(self, production, operator, variable, expression):
-        super().__init__(production)
-
-        self.operator = operator
-        self.variable = variable
-        self.expression = expression
+class Statement(Node):
+    pass
 
 
-class InstructionStatement(Node):
-    def __init__(self, production, name, *arguments):
-        super().__init__(production)
-
-        self.name = name
-        self.arguments = arguments
-
-
-class WhileStatement(Node):
-    def __init__(self, production, condition, statement):
-        super().__init__(production)
-
-        self.condition = condition
-        self.statement = statement
+# ==============================================
+#   EXPRESSIONS
+# ==============================================
+@dataclass
+class ConstantExpression(Expression):
+    value: Any
 
 
-class ForStatement(Node):
-    def __init__(self, production, identifier, range, statement):
-        super().__init__(production)
-
-        self.identifier = identifier
-        self.range = range
-        self.statement = statement
+@dataclass
+class IdentifierExpression(Expression):
+    name: str
 
 
-class IfStatement(Node):
-    def __init__(self, production, condition, statement_then, statement_else=None):
-        super().__init__(production)
-
-        self.condition = condition
-        self.statement_then = statement_then
-        self.statement_else = statement_else
+@dataclass
+class VectorExpression(Expression):
+    expressions: List[Expression]
 
 
-class OperatorExpression(Node):
-    def __init__(self, production, operator, *expressions):
-        super().__init__(production)
-
-        self.operator = operator
-        self.expressions = expressions
+@dataclass
+class RangeExpression(Expression):
+    begin: Expression
+    end: Expression
 
 
-class ConstantExpression(Node):
-    def __init__(self, production, value):
-        super().__init__(production)
-
-        self.value = value
-
-
-class FunctionExpression(Node):
-    def __init__(self, production, name, *arguments):
-        super().__init__(production)
-
-        self.name = name
-        self.arguments = arguments
+@dataclass
+class SelectorExpression(Expression):
+    expression: Expression
+    vector: VectorExpression
 
 
-class Identifier(Node):
-    def __init__(self, production, name):
-        super().__init__(production)
-
-        self.name = name
-
-
-class Selector(Node):
-    def __init__(self, production, expression, vector):
-        super().__init__(production)
-
-        self.expression = expression
-        self.vector = vector
+@dataclass
+class OperatorExpression(Expression):
+    operator: str
+    expressions: List[Expression]
 
 
-class RangeExpression(Node):
-    def __init__(self, production, begin, end):
-        super().__init__(production)
-
-        self.begin = begin
-        self.end = end
+@dataclass
+class FunctionExpression(Expression):
+    name: str
+    arguments: List[Expression]
 
 
-class VectorExpression(Node):
-    def __init__(self, production, *expressions):
-        super().__init__(production)
+# ==============================================
+#   STATEMENTS
+# ==============================================
+@dataclass
+class ProgramStatement(Statement):
+    statements: List[Statement]
 
-        self.expressions = expressions
+
+@dataclass
+class AssignmentStatement(Statement):
+    operator: str
+    variable: IdentifierExpression
+    expression: Expression
+
+
+@dataclass
+class InstructionStatement(Statement):
+    name: str
+    arguments: List[Expression]
+
+
+@dataclass
+class WhileStatement(Statement):
+    condition: Expression
+    statement: Statement
+
+
+@dataclass
+class ForStatement(Statement):
+    identifier: IdentifierExpression
+    range: RangeExpression
+    statement: Statement
+
+
+@dataclass
+class IfStatement(Statement):
+    condition: Expression
+    statement_then: Statement
+    statement_else: Statement

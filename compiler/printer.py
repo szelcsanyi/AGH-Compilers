@@ -4,15 +4,15 @@ from colored import stylize, fg
 from compiler import AST
 
 
-def get_ast_tree(root):
+def get_ast_tree(root: AST.Node):
     return format_tree(
         root,
-        lambda n: n.get_ast_name() + stylize(f' [{n.linespan[0]}-{n.linespan[1]}]', fg('grey_23')),
+        lambda n: n.get_ast_name() + stylize(f' [{n.production.linespan(0)[0]}-{n.production.linespan(0)[1]}]', fg('grey_23')),
         lambda n: n.get_ast_children()
     )
 
 
-def addToClass(cls):
+def add_to_class(cls):
     def decorator(func):
         setattr(cls, func.__name__, func)
         return func
@@ -23,7 +23,7 @@ class TmpNode:
     def __init__(self, name, *children):
         self.name = name
         self.children = children
-        self.linespan = children[0].linespan
+        self.production = children[0].production
 
     def get_ast_name(self):
         return self.name
@@ -32,131 +32,131 @@ class TmpNode:
         return self.children
 
 
-@addToClass(AST.ProgramStatement)
+@add_to_class(AST.ProgramStatement)
 def get_ast_name(self):
     return '┐'
 
 
-@addToClass(AST.ProgramStatement)
+@add_to_class(AST.ProgramStatement)
 def get_ast_children(self):
     return self.statements
 
 
-@addToClass(AST.AssignmentStatement)
+@add_to_class(AST.AssignmentStatement)
 def get_ast_name(self):
     return self.operator
 
 
-@addToClass(AST.AssignmentStatement)
+@add_to_class(AST.AssignmentStatement)
 def get_ast_children(self):
     return [self.variable, self.expression]
 
 
-@addToClass(AST.InstructionStatement)
+@add_to_class(AST.InstructionStatement)
 def get_ast_name(self):
     return self.name
 
 
-@addToClass(AST.InstructionStatement)
+@add_to_class(AST.InstructionStatement)
 def get_ast_children(self):
     return self.arguments
 
 
-@addToClass(AST.WhileStatement)
+@add_to_class(AST.WhileStatement)
 def get_ast_name(self):
     return 'WHILE'
 
 
-@addToClass(AST.WhileStatement)
+@add_to_class(AST.WhileStatement)
 def get_ast_children(self):
     return [self.condition, self.statement]
 
 
-@addToClass(AST.ForStatement)
+@add_to_class(AST.ForStatement)
 def get_ast_name(self):
     return 'FOR'
 
 
-@addToClass(AST.ForStatement)
+@add_to_class(AST.ForStatement)
 def get_ast_children(self):
     return [self.identifier, self.range, self.statement]
 
 
-@addToClass(AST.IfStatement)
+@add_to_class(AST.IfStatement)
 def get_ast_name(self):
     return 'IF'
 
 
-@addToClass(AST.IfStatement)
+@add_to_class(AST.IfStatement)
 def get_ast_children(self):
     return [self.condition, TmpNode('THEN', self.statement_then)] + [TmpNode('ELSE', self.statement_else)] if self.statement_else else []
 
 
-@addToClass(AST.OperatorExpression)
+@add_to_class(AST.OperatorExpression)
 def get_ast_name(self):
     return self.operator
 
 
-@addToClass(AST.OperatorExpression)
+@add_to_class(AST.OperatorExpression)
 def get_ast_children(self):
     return self.expressions
 
 
-@addToClass(AST.ConstantExpression)
+@add_to_class(AST.ConstantExpression)
 def get_ast_name(self):
     return str(self.value)
 
 
-@addToClass(AST.ConstantExpression)
+@add_to_class(AST.ConstantExpression)
 def get_ast_children(self):
     return []
 
 
-@addToClass(AST.FunctionExpression)
+@add_to_class(AST.FunctionExpression)
 def get_ast_name(self):
     return self.name
 
 
-@addToClass(AST.FunctionExpression)
+@add_to_class(AST.FunctionExpression)
 def get_ast_children(self):
     return self.arguments
 
 
-@addToClass(AST.Identifier)
+@add_to_class(AST.IdentifierExpression)
 def get_ast_name(self):
     return self.name
 
 
-@addToClass(AST.Identifier)
+@add_to_class(AST.IdentifierExpression)
 def get_ast_children(self):
     return []
 
 
-@addToClass(AST.Selector)
+@add_to_class(AST.SelectorExpression)
 def get_ast_name(self):
     return 'SELECTOR'
 
 
-@addToClass(AST.Selector)
+@add_to_class(AST.SelectorExpression)
 def get_ast_children(self):
     return [self.expression, self.vector]
 
 
-@addToClass(AST.RangeExpression)
+@add_to_class(AST.RangeExpression)
 def get_ast_name(self):
     return 'RANGE'
 
 
-@addToClass(AST.RangeExpression)
+@add_to_class(AST.RangeExpression)
 def get_ast_children(self):
     return [self.begin, self.end]
 
 
-@addToClass(AST.VectorExpression)
+@add_to_class(AST.VectorExpression)
 def get_ast_name(self):
     return 'VECTOR'
 
 
-@addToClass(AST.VectorExpression)
+@add_to_class(AST.VectorExpression)
 def get_ast_children(self):
     return self.expressions
