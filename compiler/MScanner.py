@@ -1,5 +1,3 @@
-import ply.lex as lex
-
 from compiler import MLexer
 
 
