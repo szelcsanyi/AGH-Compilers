@@ -61,7 +61,7 @@ def MParser():
 
     def p_statement_for(p):
         """ statement : FOR ID ASSIGN range statement """
-        p[0] = ForStatement(p.linespan(0), Variable(p.linespan(0), p[2], None), p[4], p[5])
+        p[0] = ForStatement(p.linespan(0), Identifier(p.linespan(0), p[2]), p[4], p[5])
 
     def p_statement_if(p):
         """ statement : IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement %prec SIMPLE_IF
@@ -92,8 +92,6 @@ def MParser():
                        | expression MINUS expression
                        | expression TIMES expression
                        | expression DIVIDE expression
-                       | expression EQUALS expression
-                       | expression NOT_EQUALS expression
                        | expression GREATER expression
                        | expression LESS expression
                        | expression GREATER_EQUAL expression
@@ -132,11 +130,11 @@ def MParser():
     # ==============================================
     def p_variable_id(p):
         """ variable : ID """
-        p[0] = Variable(p.linespan(0), p[1], None)
+        p[0] = Identifier(p.linespan(0), p[1])
 
     def p_variable_selector(p):
         """ variable : ID vector """
-        p[0] = Variable(p.linespan(0), p[1], p[2])
+        p[0] = Selector(p.linespan(0), Identifier(p.linespan(1), p[1]), p[2])
 
     # ==============================================
     #   HELPERS
