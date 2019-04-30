@@ -92,10 +92,6 @@ def MParser():
                        | expression MINUS expression
                        | expression TIMES expression
                        | expression DIVIDE expression
-                       | expression DOT_PLUS expression
-                       | expression DOT_MINUS expression
-                       | expression DOT_TIMES expression
-                       | expression DOT_DIVIDE expression
                        | expression EQUALS expression
                        | expression NOT_EQUALS expression
                        | expression GREATER expression
@@ -104,6 +100,14 @@ def MParser():
                        | expression LESS_EQUAL expression
         """
         p[0] = OperatorExpression(p.linespan(0), p[2], [p[1], p[3]])
+
+    def p_expression_matrix_operator(p):
+        """ expression : expression DOT_PLUS expression
+                       | expression DOT_MINUS expression
+                       | expression DOT_TIMES expression
+                       | expression DOT_DIVIDE expression
+        """
+        p[0] = MatrixOperatorExpression(p.linespan(0), p[2], p[1], p[3])
 
     def p_expression_function(p):
         """ expression : function BRACKET_ROUND_L comma_list BRACKET_ROUND_R """
