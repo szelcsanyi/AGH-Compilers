@@ -79,9 +79,9 @@ def MParser():
         """
         p[0] = ConstantExpression(p.linespan(0), p[1])
 
-    def p_expression_left_unary_operator(p):
+    def p_expression_unary_minus(p):
         """ expression : MINUS expression %prec UNARY_MINUS """
-        p[0] = OperatorExpression(p.linespan(0), p[1], p[2])
+        p[0] = UnaryMinusExpression(p.linespan(0), p[2])
 
     def p_expression_transpose(p):
         """ expression : expression APOSTROPHE """

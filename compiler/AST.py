@@ -49,6 +49,11 @@ class TransposeExpression(Expression):
 
 
 @dataclass
+class UnaryMinusExpression(Expression):
+    expression: Expression
+
+
+@dataclass
 class FunctionExpression(Expression):
     name: str
     arguments: List[Expression]
