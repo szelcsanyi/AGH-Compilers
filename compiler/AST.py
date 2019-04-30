@@ -44,6 +44,13 @@ class OperatorExpression(Expression):
 
 
 @dataclass
+class EqualOperatorExpression(Expression):
+    operator: str
+    left_expression: Expression
+    right_expression: Expression
+
+
+@dataclass
 class MatrixOperatorExpression(Expression):
     operator: str
     left_expression: Expression

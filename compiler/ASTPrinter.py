@@ -57,6 +57,10 @@ class ASTPrinter:
         return node.operator
 
     @_get_name.register
+    def _(self, node: AST.EqualOperatorExpression) -> str:
+        return node.operator
+
+    @_get_name.register
     def _(self, node: AST.MatrixOperatorExpression) -> str:
         return node.operator
 
@@ -130,6 +134,10 @@ class ASTPrinter:
     @_get_children.register
     def _(self, node: AST.OperatorExpression) -> List[AST.Node]:
         return node.expressions
+
+    @_get_children.register
+    def _(self, node: AST.EqualOperatorExpression) -> List[AST.Node]:
+        return [node.left_expression, node.right_expression]
 
     @_get_children.register
     def _(self, node: AST.MatrixOperatorExpression) -> List[AST.Node]:

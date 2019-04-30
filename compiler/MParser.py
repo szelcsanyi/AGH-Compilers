@@ -101,6 +101,12 @@ def MParser():
         """
         p[0] = OperatorExpression(p.linespan(0), p[2], [p[1], p[3]])
 
+    def p_expression_equal_operator(p):
+        """ expression : expression EQUALS expression
+                       | expression NOT_EQUALS expression
+        """
+        p[0] = EqualOperatorExpression(p.linespan(0), p[2], p[1], p[3])
+
     def p_expression_matrix_operator(p):
         """ expression : expression DOT_PLUS expression
                        | expression DOT_MINUS expression
