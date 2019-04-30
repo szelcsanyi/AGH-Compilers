@@ -1,6 +1,6 @@
 import sys
 
-from compiler import MParser, MLexer, get_ast_tree
+from compiler import MParser, MLexer, ASTPrinter
 
 if __name__ == '__main__':
 
@@ -19,4 +19,4 @@ if __name__ == '__main__':
     root = parser.parse(text, lexer=MLexer(), tracking=True)
 
     # print
-    print(get_ast_tree(root))
+    print(ASTPrinter().generate(root))

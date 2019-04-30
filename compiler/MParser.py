@@ -13,11 +13,11 @@ def MParser():
     # ==============================================
     def p_program_head(p):
         """ program : """
-        p[0] = ProgramStatement(p, [])
+        p[0] = ProgramStatement(p.linespan(0), [])
 
     def p_program_tail(p):
         """ program : statement program """
-        p[0] = ProgramStatement(p, [p[1]] + p[2].statements)
+        p[0] = ProgramStatement(p.linespan(0), [p[1]] + p[2].statements)
 
     # ==============================================
     #   STATEMENTS
@@ -29,7 +29,7 @@ def MParser():
                       | variable ASSIGN_TIMES expression SEMICOLON
                       | variable ASSIGN_DIVIDE expression SEMICOLON
         """
-        p[0] = AssignmentStatement(p, p[2], p[1], p[3])
+        p[0] = AssignmentStatement(p.linespan(0), p[2], p[1], p[3])
 
     def p_statement_block(p):
         """ statement : BRACKET_CURLY_L program BRACKET_CURLY_R """
@@ -37,33 +37,33 @@ def MParser():
 
     def p_statement_print(p):
         """ statement : PRINT comma_list SEMICOLON """
-        p[0] = InstructionStatement(p, p[1], p[2])
+        p[0] = InstructionStatement(p.linespan(0), p[1], p[2])
 
     def p_statement_break(p):
         """ statement : BREAK SEMICOLON """
-        p[0] = InstructionStatement(p, p[1], [])
+        p[0] = InstructionStatement(p.linespan(0), p[1], [])
 
     def p_statement_continue(p):
         """ statement : CONTINUE SEMICOLON """
-        p[0] = InstructionStatement(p, p[1], [])
+        p[0] = InstructionStatement(p.linespan(0), p[1], [])
 
     def p_statement_return(p):
         """ statement : RETURN expression SEMICOLON """
-        p[0] = InstructionStatement(p, p[1], p[2])
+        p[0] = InstructionStatement(p.linespan(0), p[1], p[2])
 
     def p_statement_while(p):
         """ statement : WHILE BRACKET_ROUND_L expression BRACKET_ROUND_R statement """
-        p[0] = WhileStatement(p, p[3], p[5])
+        p[0] = WhileStatement(p.linespan(0), p[3], p[5])
 
     def p_statement_for(p):
         """ statement : FOR ID ASSIGN range statement """
-        p[0] = ForStatement(p, Variable(p, p[2], None), p[4], p[5])
+        p[0] = ForStatement(p.linespan(0), Variable(p.linespan(0), p[2], None), p[4], p[5])
 
     def p_statement_if(p):
         """ statement : IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement %prec SIMPLE_IF
                       | IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement ELSE statement
         """
-        p[0] = IfStatement(p, p[3], p[5], p[7] if len(p) > 7 else None)
+        p[0] = IfStatement(p.linespan(0), p[3], p[5], p[7] if len(p) > 7 else None)
 
     # ==============================================
     #   EXPRESSIONS
@@ -73,15 +73,15 @@ def MParser():
                        | FLOAT
                        | STRING
         """
-        p[0] = ConstantExpression(p, p[1])
+        p[0] = ConstantExpression(p.linespan(0), p[1])
 
     def p_expression_left_unary_operator(p):
         """ expression : MINUS expression %prec UNARY_MINUS """
-        p[0] = OperatorExpression(p, p[1], p[2])
+        p[0] = OperatorExpression(p.linespan(0), p[1], p[2])
 
     def p_expression_transpose(p):
         """ expression : expression APOSTROPHE """
-        p[0] = OperatorExpression(p, p[2], [p[1]])
+        p[0] = OperatorExpression(p.linespan(0), p[2], [p[1]])
 
     def p_expression_binary_operator(p):
         """ expression : expression PLUS expression
@@ -99,11 +99,11 @@ def MParser():
                        | expression GREATER_EQUAL expression
                        | expression LESS_EQUAL expression
         """
-        p[0] = OperatorExpression(p, p[2], [p[1], p[3]])
+        p[0] = OperatorExpression(p.linespan(0), p[2], [p[1], p[3]])
 
     def p_expression_function(p):
         """ expression : function BRACKET_ROUND_L comma_list BRACKET_ROUND_R """
-        p[0] = FunctionExpression(p, p[1], p[3])
+        p[0] = FunctionExpression(p.linespan(0), p[1], p[3])
 
     def p_expression_vector(p):
         """ expression : vector """
@@ -118,11 +118,11 @@ def MParser():
     # ==============================================
     def p_variable_id(p):
         """ variable : ID """
-        p[0] = Variable(p, p[1], None)
+        p[0] = Variable(p.linespan(0), p[1], None)
 
     def p_variable_selector(p):
         """ variable : ID vector """
-        p[0] = Variable(p, p[1], p[2])
+        p[0] = Variable(p.linespan(0), p[1], p[2])
 
     # ==============================================
     #   HELPERS
@@ -136,7 +136,7 @@ def MParser():
 
     def p_vector(p):
         """ vector : BRACKET_SQUARE_L comma_list BRACKET_SQUARE_R """
-        p[0] = VectorExpression(p, p[2])
+        p[0] = VectorExpression(p.linespan(0), p[2])
 
     def p_comma_list_head(p):
         """ comma_list : expression """
@@ -148,7 +148,7 @@ def MParser():
 
     def p_range(p):
         """ range : expression COLON expression """
-        p[0] = RangeExpression(p, p[1], p[3])
+        p[0] = RangeExpression(p.linespan(0), p[1], p[3])
 
     # ==============================================
     #   ERRORS

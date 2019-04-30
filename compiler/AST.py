@@ -1,8 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any, List, Optional
-
-from ply.yacc import YaccProduction
+from typing import Any, List, Optional, Tuple
 
 
 # ==============================================
@@ -10,7 +8,7 @@ from ply.yacc import YaccProduction
 # ==============================================
 @dataclass
 class Node(ABC):
-    production: YaccProduction
+    line_span: Tuple[int, int]
 
 
 class Expression(Node):
