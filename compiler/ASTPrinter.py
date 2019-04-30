@@ -53,7 +53,7 @@ class ASTPrinter:
         return 'RANGE'
 
     @_get_name.register
-    def _(self, node: AST.OperatorExpression) -> str:
+    def _(self, node: AST.ScalarOperatorExpression) -> str:
         return node.operator
 
     @_get_name.register
@@ -132,7 +132,7 @@ class ASTPrinter:
         return [node.begin, node.end]
 
     @_get_children.register
-    def _(self, node: AST.OperatorExpression) -> List[AST.Node]:
+    def _(self, node: AST.ScalarOperatorExpression) -> List[AST.Node]:
         return node.expressions
 
     @_get_children.register

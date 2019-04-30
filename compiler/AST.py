@@ -38,7 +38,7 @@ class RangeExpression(Expression):
 
 
 @dataclass
-class OperatorExpression(Expression):
+class ScalarOperatorExpression(Expression):
     operator: str
     expressions: List[Expression]
 
