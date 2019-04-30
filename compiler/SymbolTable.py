@@ -48,3 +48,10 @@ class SymbolTable:
             if key in scope:
                 return scope[key]
         return None
+
+    def __contains__(self, key):
+        """ Checks if given symbol is saved in table """
+        for scope in reversed(self.scopes):
+            if key in scope:
+                return True
+        return False
