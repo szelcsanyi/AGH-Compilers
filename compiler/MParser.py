@@ -85,7 +85,7 @@ def MParser():
 
     def p_expression_transpose(p):
         """ expression : expression APOSTROPHE """
-        p[0] = OperatorExpression(p.linespan(0), p[2], [p[1]])
+        p[0] = TransposeExpression(p.linespan(0), p[1])
 
     def p_expression_binary_operator(p):
         """ expression : expression PLUS expression

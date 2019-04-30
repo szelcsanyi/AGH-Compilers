@@ -57,6 +57,10 @@ class ASTPrinter:
         return node.operator
 
     @_get_name.register
+    def _(self, node: AST.TransposeExpression) -> str:
+        return 'TRANSPOSE'
+
+    @_get_name.register
     def _(self, node: AST.FunctionExpression) -> str:
         return node.name
 
@@ -118,6 +122,10 @@ class ASTPrinter:
     @_get_children.register
     def _(self, node: AST.OperatorExpression) -> List[AST.Node]:
         return node.expressions
+
+    @_get_children.register
+    def _(self, node: AST.TransposeExpression) -> List[AST.Node]:
+        return [node.expression]
 
     @_get_children.register
     def _(self, node: AST.FunctionExpression) -> List[AST.Node]:

@@ -44,6 +44,11 @@ class OperatorExpression(Expression):
 
 
 @dataclass
+class TransposeExpression(Expression):
+    expression: Expression
+
+
+@dataclass
 class FunctionExpression(Expression):
     name: str
     arguments: List[Expression]
