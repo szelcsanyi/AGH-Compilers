@@ -70,6 +70,10 @@ class ASTPrinter:
 
     @_get_name.register
     def _(self, node: AST.AssignmentStatement) -> str:
+        return '='
+
+    @_get_name.register
+    def _(self, node: AST.AssignmentWithOperatorStatement) -> str:
         return node.operator
 
     @_get_name.register
@@ -129,6 +133,10 @@ class ASTPrinter:
 
     @_get_children.register
     def _(self, node: AST.AssignmentStatement) -> List[AST.Node]:
+        return [node.variable, node.expression]
+
+    @_get_children.register
+    def _(self, node: AST.AssignmentWithOperatorStatement) -> List[AST.Node]:
         return [node.variable, node.expression]
 
     @_get_children.register

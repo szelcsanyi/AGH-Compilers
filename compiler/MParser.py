@@ -24,12 +24,16 @@ def MParser():
     # ==============================================
     def p_statement_assignment(p):
         """ statement : variable ASSIGN expression SEMICOLON
-                      | variable ASSIGN_PLUS expression SEMICOLON
+        """
+        p[0] = AssignmentStatement(p.linespan(0), p[1], p[3])
+
+    def p_statement_assignment_with_operator(p):
+        """ statement : variable ASSIGN_PLUS expression SEMICOLON
                       | variable ASSIGN_MINUS expression SEMICOLON
                       | variable ASSIGN_TIMES expression SEMICOLON
                       | variable ASSIGN_DIVIDE expression SEMICOLON
         """
-        p[0] = AssignmentStatement(p.linespan(0), p[2], p[1], p[3])
+        p[0] = AssignmentWithOperatorStatement(p.linespan(0), p[2], p[1], p[3])
 
     def p_statement_block(p):
         """ statement : BRACKET_CURLY_L program BRACKET_CURLY_R """

@@ -68,6 +68,12 @@ class ProgramStatement(Statement):
 
 @dataclass
 class AssignmentStatement(Statement):
+    variable: Variable
+    expression: Expression
+
+
+@dataclass
+class AssignmentWithOperatorStatement(Statement):
     operator: str
     variable: Variable
     expression: Expression
