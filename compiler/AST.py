@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any, List
+from typing import Any, List, Optional
 
 from ply.yacc import YaccProduction
 
@@ -20,18 +20,12 @@ class Expression(Node):
 class Statement(Node):
     pass
 
-
 # ==============================================
 #   EXPRESSIONS
 # ==============================================
 @dataclass
 class ConstantExpression(Expression):
     value: Any
-
-
-@dataclass
-class IdentifierExpression(Expression):
-    name: str
 
 
 @dataclass
@@ -43,12 +37,6 @@ class VectorExpression(Expression):
 class RangeExpression(Expression):
     begin: Expression
     end: Expression
-
-
-@dataclass
-class SelectorExpression(Expression):
-    expression: Expression
-    vector: VectorExpression
 
 
 @dataclass
@@ -64,6 +52,15 @@ class FunctionExpression(Expression):
 
 
 # ==============================================
+#   VARIABLE
+# ==============================================
+@dataclass
+class Variable(Expression):
+    name: str
+    selector: Optional[VectorExpression]
+
+
+# ==============================================
 #   STATEMENTS
 # ==============================================
 @dataclass
@@ -74,7 +71,7 @@ class ProgramStatement(Statement):
 @dataclass
 class AssignmentStatement(Statement):
     operator: str
-    variable: IdentifierExpression
+    variable: Variable
     expression: Expression
 
 
@@ -92,7 +89,7 @@ class WhileStatement(Statement):
 
 @dataclass
 class ForStatement(Statement):
-    identifier: IdentifierExpression
+    identifier: Variable
     range: RangeExpression
     statement: Statement
 
@@ -101,4 +98,4 @@ class ForStatement(Statement):
 class IfStatement(Statement):
     condition: Expression
     statement_then: Statement
-    statement_else: Statement
+    statement_else: Optional[Statement]

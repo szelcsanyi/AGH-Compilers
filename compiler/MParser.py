@@ -57,7 +57,7 @@ def MParser():
 
     def p_statement_for(p):
         """ statement : FOR ID ASSIGN range statement """
-        p[0] = ForStatement(p, IdentifierExpression(p, p[2]), p[4], p[5])
+        p[0] = ForStatement(p, Variable(p, p[2], None), p[4], p[5])
 
     def p_statement_if(p):
         """ statement : IF BRACKET_ROUND_L expression BRACKET_ROUND_R statement %prec SIMPLE_IF
@@ -118,11 +118,11 @@ def MParser():
     # ==============================================
     def p_variable_id(p):
         """ variable : ID """
-        p[0] = IdentifierExpression(p, p[1])
+        p[0] = Variable(p, p[1], None)
 
     def p_variable_selector(p):
         """ variable : ID vector """
-        p[0] = SelectorExpression(p, IdentifierExpression(p, p[1]), p[2])
+        p[0] = Variable(p, p[1], p[2])
 
     # ==============================================
     #   HELPERS
