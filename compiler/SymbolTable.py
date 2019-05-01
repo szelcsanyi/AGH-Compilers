@@ -38,6 +38,13 @@ class SymbolTable:
         """ Returns 'global' scope, the scope at index of 0 """
         return self.scopes[0]
 
+    def has_scope(self, name: str):
+        """ Checks if there is scope with given name """
+        for scope in reversed(self.scopes):
+            if scope.name == name:
+                return True
+        return False
+
     def __setitem__(self, key: str, value: Any):
         """ Saves symbol in current scope """
         self.get_current_scope()[key] = value
