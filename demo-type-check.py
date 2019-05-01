@@ -1,6 +1,6 @@
 import sys
 
-from compiler import MParser, MLexer, get_ast_tree, TypeChecker
+from compiler import MParser, MLexer, TypeChecker
 
 if __name__ == '__main__':
 
@@ -18,4 +18,7 @@ if __name__ == '__main__':
     parser = MParser()
     root = parser.parse(text, lexer=MLexer(), tracking=True)
 
-    TypeChecker().check(root)
+    # check types
+    checker = TypeChecker()
+    checker.check(root)
+    checker.print_errors()
