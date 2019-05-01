@@ -77,8 +77,12 @@ class ASTPrinter:
         return node.name
 
     @_get_name.register
-    def _(self, node: AST.Variable) -> str:
+    def _(self, node: AST.Identifier) -> str:
         return node.name
+
+    @_get_name.register
+    def _(self, node: AST.Selector) -> str:
+        return node.identifier.name
 
     @_get_name.register
     def _(self, node: AST.ProgramStatement) -> str:
@@ -156,8 +160,12 @@ class ASTPrinter:
         return node.arguments
 
     @_get_children.register
-    def _(self, node: AST.Variable) -> List[AST.Node]:
-        return [TmpNode(node.selector.line_span, 'SELECTOR', node.selector.expressions)] if node.selector else []
+    def _(self, node: AST.Identifier) -> List[AST.Node]:
+        return []
+
+    @_get_children.register
+    def _(self, node: AST.Selector) -> List[AST.Node]:
+        return [TmpNode(node.selector.line_span, 'SELECTOR', node.selector.expressions)]
 
     @_get_children.register
     def _(self, node: AST.ProgramStatement) -> List[AST.Node]:

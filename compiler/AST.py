@@ -18,6 +18,11 @@ class Expression(Node):
 class Statement(Node):
     pass
 
+
+class Variable(Node):
+    pass
+
+
 # ==============================================
 #   EXPRESSIONS
 # ==============================================
@@ -77,9 +82,14 @@ class FunctionExpression(Expression):
 #   VARIABLE
 # ==============================================
 @dataclass
-class Variable(Expression):
+class Identifier(Variable):
     name: str
-    selector: Optional[VectorExpression]
+
+
+@dataclass
+class Selector(Variable):
+    identifier: Identifier
+    selector: VectorExpression
 
 
 # ==============================================
