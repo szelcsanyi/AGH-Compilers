@@ -137,7 +137,7 @@ class ASTPrinter:
 
     @_get_children.register
     def _(self, node: AST.ScalarOperatorExpression) -> List[AST.Node]:
-        return node.expressions
+        return [node.left_expression, node.right_expression]
 
     @_get_children.register
     def _(self, node: AST.EqualOperatorExpression) -> List[AST.Node]:

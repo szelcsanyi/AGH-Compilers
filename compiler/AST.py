@@ -45,7 +45,8 @@ class RangeExpression(Expression):
 @dataclass
 class ScalarOperatorExpression(Expression):
     operator: str
-    expressions: List[Expression]
+    left_expression: Expression
+    right_expression: Expression
 
 
 @dataclass

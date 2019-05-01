@@ -97,7 +97,7 @@ def MParser():
                        | expression GREATER_EQUAL expression
                        | expression LESS_EQUAL expression
         """
-        p[0] = ScalarOperatorExpression(p.linespan(0), p[2], [p[1], p[3]])
+        p[0] = ScalarOperatorExpression(p.linespan(0), p[2], p[1], p[3])
 
     def p_expression_equal_operator(p):
         """ expression : expression EQUALS expression
