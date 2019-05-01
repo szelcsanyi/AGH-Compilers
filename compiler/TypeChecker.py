@@ -13,6 +13,9 @@ class TypeChecker:
     def check(self, node: AST.Node):
         raise NotImplementedError(f'There is no type check implemented for {node.__class__}')
 
+    # ==============================================
+    #   EXPRESSIONS
+    # ==============================================
     @check.register
     def _(self, node: AST.ConstantExpression):
         raise NotImplementedError('type check for ConstantExpression')  # TODO: Implement
@@ -26,17 +29,43 @@ class TypeChecker:
         raise NotImplementedError('type check for RangeExpression')  # TODO: Implement
     
     @check.register
-    def _(self, node: AST.OperatorExpression):
-        raise NotImplementedError('type check for OperatorExpression')  # TODO: Implement
+    def _(self, node: AST.ScalarOperatorExpression):
+        raise NotImplementedError('type check for ScalarOperatorExpression')  # TODO: Implement
+
+    @check.register
+    def _(self, node: AST.EqualOperatorExpression):
+        raise NotImplementedError('type check for EqualOperatorExpression')  # TODO: Implement
+
+    @check.register
+    def _(self, node: AST.MatrixOperatorExpression):
+        raise NotImplementedError('type check for MatrixOperatorExpression')  # TODO: Implement
+
+    @check.register
+    def _(self, node: AST.TransposeExpression):
+        raise NotImplementedError('type check for TransposeExpression')  # TODO: Implement
+
+    @check.register
+    def _(self, node: AST.UnaryMinusExpression):
+        raise NotImplementedError('type check for UnaryMinusExpression')  # TODO: Implement
     
     @check.register
     def _(self, node: AST.FunctionExpression):
         raise NotImplementedError('type check for FunctionExpression')  # TODO: Implement
 
+    # ==============================================
+    #   VARIABLES
+    # ==============================================
     @check.register
-    def _(self, node: AST.Variable):
-        raise NotImplementedError('type check for SelectorExpression')  # TODO: Implement
+    def _(self, node: AST.Identifier):
+        raise NotImplementedError('type check for Identifier')  # TODO: Implement
 
+    @check.register
+    def _(self, node: AST.Selector):
+        raise NotImplementedError('type check for Selector')  # TODO: Implement
+
+    # ==============================================
+    #   STATEMENTS
+    # ==============================================
     @check.register
     def _(self, node: AST.ProgramStatement):
         for statement in node.statements:
@@ -45,6 +74,10 @@ class TypeChecker:
     @check.register
     def _(self, node: AST.AssignmentStatement):
         raise NotImplementedError('type check for AssignmentStatement')  # TODO: Implement
+
+    @check.register
+    def _(self, node: AST.AssignmentWithOperatorStatement):
+        raise NotImplementedError('type check for AssignmentWithOperatorStatement')  # TODO: Implement
 
     @check.register
     def _(self, node: AST.InstructionStatement):
