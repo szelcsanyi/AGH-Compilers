@@ -127,7 +127,7 @@ class WhileStatement(Statement):
 
 @dataclass
 class ForStatement(Statement):
-    identifier: Variable
+    identifier: Identifier
     range: RangeExpression
     statement: Statement
 
