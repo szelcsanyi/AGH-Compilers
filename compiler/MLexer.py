@@ -1,5 +1,7 @@
 import ply.lex as lex
 
+from compiler import CompilerError
+
 
 def MLexer():
 
@@ -102,8 +104,8 @@ def MLexer():
     return lex.lex()
 
 
-class LexerError(Exception):
+class LexerError(CompilerError):
     def __init__(self, token):
-        super().__init__(f"Illegal character '{token.value[0]}' at line {token.lineno}")
+        super().__init__('Lexer', token.lineno, f"Illegal character '{token.value[0]}'")
 
         self.token = token

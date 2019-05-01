@@ -2,7 +2,7 @@ import sys
 
 from ply import yacc
 
-from compiler import MLexer
+from compiler import MLexer, CompilerError
 from compiler.AST import *
 
 
@@ -191,11 +191,11 @@ def MParser():
     return yacc.yacc()
 
 
-class ParserError(Exception):
+class ParserError(CompilerError):
     def __init__(self, production):
         if production:
-            super().__init__(f"Unexpected token ({production.type}, '{production.value}') at line {production.lineno}")
+            super().__init__('Parser', production.lineno, f"Unexpected token ({production.type}, '{production.value}')")
         else:
-            super().__init__("Unexpected end of input")
+            super().__init__('Parser', -1, 'Unexpected end of input')
 
         self.production = production

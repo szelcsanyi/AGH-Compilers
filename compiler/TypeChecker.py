@@ -4,21 +4,23 @@ from typing import Tuple
 from compiler import AST, SymbolTable
 from compiler.MType import MType
 from compiler.type_tables import SCALAR_OPERATORS, UNARY_MINUS
-from compiler.utils import method_dispatch
+from compiler.utils import method_dispatch, CompilerError
 
 
 class TypeChecker:
 
-    def __init__(self, symbol_table: SymbolTable = SymbolTable()):
+    def __init__(self, symbol_table: SymbolTable = SymbolTable(), collect_errors: bool = False):
         self.symbol_table = symbol_table
+        self.collect_errors = collect_errors
         self.errors = []
 
     def _error(self, line_span: Tuple[int, int], message: str):
-        self.errors.append((line_span, message))
+        err = TypeCheckerError(line_span, message)
 
-    def print_errors(self):
-        for lines, msg in self.errors:
-            print(f"Type error at line {lines[0]}: {msg}")
+        if not self.collect_errors:
+            raise err
+
+        self.errors.append(err)
 
     @method_dispatch
     def check(self, node: AST.Node) -> MType:
@@ -294,3 +296,10 @@ class TypeChecker:
             self.symbol_table.pop_scope()
 
         return MType.NONE
+
+
+class TypeCheckerError(CompilerError):
+    def __init__(self, line_span: Tuple[int, int], msg: str) -> None:
+        super().__init__('TypeChecker', line_span[0], msg)
+
+        self.line_span = line_span

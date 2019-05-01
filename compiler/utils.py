@@ -15,3 +15,14 @@ def method_dispatch(func):
     wrapper.register = dispatcher.register
     update_wrapper(wrapper, func)
     return wrapper
+
+
+class CompilerError(Exception):
+    def __init__(self, module: str, lineno: int, msg: str, *args: object) -> None:
+        super().__init__(msg, *args)
+        self.module = module
+        self.lineno = lineno
+        self.msg = msg
+
+    def __str__(self) -> str:
+        return f'{self.module} error (line {self.lineno}): {self.msg}'
