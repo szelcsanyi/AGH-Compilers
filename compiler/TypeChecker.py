@@ -1,4 +1,5 @@
 """ Type checker module """
+from typing import Tuple
 
 from compiler import AST, SymbolTable
 from compiler.utils import method_dispatch
@@ -8,6 +9,14 @@ class TypeChecker:
 
     def __init__(self, symbol_table: SymbolTable = SymbolTable()):
         self.symbol_table = symbol_table
+        self.errors = []
+
+    def _error(self, line_span: Tuple[int, int], message: str):
+        self.errors.append((line_span, message))
+
+    def print_errors(self):
+        for lines, msg in self.errors:
+            print(f"Type error at line {lines[0]}: {msg}")
 
     @method_dispatch
     def check(self, node: AST.Node):
