@@ -53,7 +53,7 @@ def MParser():
 
     def p_statement_return(p):
         """ statement : RETURN expression SEMICOLON """
-        p[0] = InstructionStatement(p.linespan(0), p[1], p[2])
+        p[0] = InstructionStatement(p.linespan(0), p[1], [p[2]])
 
     def p_statement_while(p):
         """ statement : WHILE BRACKET_ROUND_L expression BRACKET_ROUND_R statement """
