@@ -76,6 +76,7 @@ def MParser():
         """ expression : INT
                        | FLOAT
                        | STRING
+                       | bool
         """
         p[0] = ConstantExpression(p.linespan(0), p[1])
 
@@ -145,6 +146,12 @@ def MParser():
                      | ONES
         """
         p[0] = p[1]
+
+    def p_bool(p):
+        """ bool : TRUE
+                 | FALSE
+        """
+        p[0] = p[1] == 'true'
 
     def p_vector(p):
         """ vector : BRACKET_SQUARE_L comma_list BRACKET_SQUARE_R """

@@ -58,7 +58,9 @@ def MLexer():
         "eye": "EYE",
         "zeros": "ZEROS",
         "ones": "ONES",
-        "print": "PRINT"
+        "print": "PRINT",
+        "true": "TRUE",
+        "false": "FALSE"
     }
 
     # identifiers

@@ -10,7 +10,9 @@ $ pipenv run cli
 
 ### Constants
 ```python
-i1 = 10;              # int
+b1 = true;            # boolean
+b2 = false;           # boolean
+i1 = 10;              # integer
 f1 = 60.5;            # float
 f2 = 60.;             # float
 f3 = .5;              # float
