@@ -74,9 +74,9 @@ class TestMScanner(unittest.TestCase):
         self.assertEqual(tokens[28].value, '}')
 
     def test_reserved(self):
-        tokens = self.scanner.tokenize("if else for while break continue return eye zeros ones print")
+        tokens = self.scanner.tokenize("if else for while break continue return eye zeros ones print true false")
 
-        self.assertEqual(len(tokens), 11)
+        self.assertEqual(len(tokens), 13)
 
         self.assertEqual(tokens[0].type, 'IF')
         self.assertEqual(tokens[1].type, 'ELSE')
@@ -89,6 +89,8 @@ class TestMScanner(unittest.TestCase):
         self.assertEqual(tokens[8].type, 'ZEROS')
         self.assertEqual(tokens[9].type, 'ONES')
         self.assertEqual(tokens[10].type, 'PRINT')
+        self.assertEqual(tokens[11].type, 'TRUE')
+        self.assertEqual(tokens[12].type, 'FALSE')
 
         self.assertEqual(tokens[0].value, 'if')
         self.assertEqual(tokens[1].value, 'else')
@@ -101,6 +103,8 @@ class TestMScanner(unittest.TestCase):
         self.assertEqual(tokens[8].value, 'zeros')
         self.assertEqual(tokens[9].value, 'ones')
         self.assertEqual(tokens[10].value, 'print')
+        self.assertEqual(tokens[11].value, 'true')
+        self.assertEqual(tokens[12].value, 'false')
 
     def test_id(self):
         tokens = self.scanner.tokenize('abc1 ABC2 aBc3 _0abc _a_b_1')
