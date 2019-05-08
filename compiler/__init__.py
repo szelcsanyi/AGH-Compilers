@@ -6,3 +6,4 @@ from .MType import MType
 from .SymbolTable import SymbolTable
 from .TypeChecker import TypeChecker
 from .ASTPrinter import ASTPrinter
+from .Interpreter import Interpreter

@@ -1,7 +1,7 @@
 import click
 from tabulate import tabulate
 
-from compiler import MScanner, MParser, MLexer, CompilerError, ASTPrinter, TypeChecker
+from compiler import MScanner, MParser, MLexer, CompilerError, ASTPrinter, TypeChecker, Interpreter
 
 
 def _echo_error(err):
@@ -72,6 +72,25 @@ def check_types(file):
     # print errors
     for err in checker.errors:
         _echo_error(err)
+
+
+@cli.command('execute', short_help='Executes program')
+@click.argument('file', type=click.File('r'))
+def execute(file):
+    """ Performs parsing, scanning, type check and execution """
+
+    try:
+        # parse file
+        root = MParser().parse(file.read(), lexer=MLexer(), tracking=True)
+
+        # check types
+        TypeChecker().check(root)
+
+        # execute
+        Interpreter().execute(root)
+
+    except CompilerError as err:
+        return _echo_error(err)
 
 
 if __name__ == '__main__':
