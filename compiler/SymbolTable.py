@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from typing import Any
 
 
@@ -23,6 +24,13 @@ class SymbolTable:
         if len(self.scopes) < 2:
             raise ValueError('Cannot pop base scope')
         self.scopes.pop()
+
+    @contextmanager
+    def context_scope(self, name: str):
+        """ Returns context manager that pushes new scope and then pops it """
+        self.push_scope(name)
+        yield self
+        self.pop_scope()
 
     def get_current_scope(self):
         """ Returns current scope, the scope as index -1 """

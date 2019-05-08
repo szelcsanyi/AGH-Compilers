@@ -182,12 +182,10 @@ class TypeChecker:
     # ==============================================
     @check.register
     def _(self, node: AST.ProgramStatement) -> MType:
-        self.symbol_table.push_scope('program')
+        with self.symbol_table.context_scope('program'):
+            for statement in node.statements:
+                self.check(statement)
 
-        for statement in node.statements:
-            self.check(statement)
-
-        self.symbol_table.pop_scope()
         return MType.NONE
     
     @check.register
@@ -252,29 +250,27 @@ class TypeChecker:
     
     @check.register
     def _(self, node: AST.WhileStatement) -> MType:
-        self.symbol_table.push_scope('loop')
+        with self.symbol_table.context_scope('while'):
 
-        # condition
-        if self.check(node.condition) != MType.BOOL:
-            self._error(node.line_span, 'Condition in while statement has to evaluate to boolean')
+            # condition
+            if self.check(node.condition) != MType.BOOL:
+                self._error(node.line_span, 'Condition in while statement has to evaluate to boolean')
 
-        # statement
-        self.check(node.statement)
+            # statement
+            self.check(node.statement)
 
-        self.symbol_table.pop_scope()
         return MType.NONE
     
     @check.register
     def _(self, node: AST.ForStatement) -> MType:
-        self.symbol_table.push_scope('loop')
+        with self.symbol_table.context_scope('loop'):
 
-        # identifier and range
-        self.symbol_table[node.identifier.name] = self.check(node.range)
+            # identifier and range
+            self.symbol_table[node.identifier.name] = self.check(node.range)
 
-        # statement
-        self.check(node.statement)
+            # statement
+            self.check(node.statement)
 
-        self.symbol_table.pop_scope()
         return MType.NONE
     
     @check.register
@@ -285,15 +281,13 @@ class TypeChecker:
             self._error(node.line_span, 'Condition in if statement has to evaluate to boolean')
 
         # then statement
-        self.symbol_table.push_scope('then')
-        self.check(node.statement_then)
-        self.symbol_table.pop_scope()
+        with self.symbol_table.context_scope('then'):
+            self.check(node.statement_then)
 
         # else statement
         if node.statement_else:
-            self.symbol_table.push_scope('else')
-            self.check(node.statement_else)
-            self.symbol_table.pop_scope()
+            with self.symbol_table.context_scope('else'):
+                self.check(node.statement_else)
 
         return MType.NONE
 
