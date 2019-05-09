@@ -54,7 +54,14 @@ class SymbolTable:
         return False
 
     def __setitem__(self, key: str, value: Any):
-        """ Saves symbol in current scope """
+        """ If symbol already exists in any of the scopes updates it value, if not saves symbol to current scope """
+        # find existing value
+        for scope in reversed(self.scopes):
+            if key in scope:
+                scope[key] = value
+                return
+
+        # if value not found create it in current scope
         self.get_current_scope()[key] = value
 
     def __getitem__(self, key):
