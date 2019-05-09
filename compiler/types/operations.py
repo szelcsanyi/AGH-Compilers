@@ -1,9 +1,9 @@
 from compiler.types import MType
 
 UNARY_MINUS = {
-    MType.BOOL:   MType.INT,
-    MType.INT:    MType.INT,
-    MType.FLOAT:  MType.FLOAT
+    (MType.BOOL, ):   MType.INT,
+    (MType.INT, ):    MType.INT,
+    (MType.FLOAT, ):  MType.FLOAT
 }
 
 PLUS = {
