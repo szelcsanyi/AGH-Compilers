@@ -1,11 +1,6 @@
 import click
 from tabulate import tabulate
 
-from compiler.interpreter import Interpreter
-from compiler.parser.MParser import MParser
-from compiler.printer import ASTPrinter
-from compiler.scanner import MScanner, MLexer
-from compiler.types import TypeChecker
 from compiler.utils import CompilerError
 
 
@@ -22,7 +17,9 @@ def cli():
 @click.argument('file', type=click.File('r'))
 def scanner(file):
     """ Displays result of processing given fine by scanner in form of table of tokens """
+    from compiler.scanner import MScanner
 
+    # tokenize
     try:
         tokens = MScanner().tokenize(file.read())
     except CompilerError as err:
@@ -40,7 +37,10 @@ def scanner(file):
 @click.argument('file', type=click.File('r'))
 def parser(file):
     """ Runs parser on given file and displays potential error """
+    from compiler.parser import MParser
+    from compiler.scanner import MLexer
 
+    # parses file
     try:
         MParser().parse(file.read(), lexer=MLexer())
     except CompilerError as err:
@@ -51,7 +51,11 @@ def parser(file):
 @click.argument('file', type=click.File('r'))
 def ast(file):
     """ Displays AST tree that represents parser file """
+    from compiler.parser import MParser
+    from compiler.scanner import MLexer
+    from compiler.printer import ASTPrinter
 
+    # parse file
     try:
         root = MParser().parse(file.read(), lexer=MLexer(), tracking=True)
     except CompilerError as err:
@@ -65,14 +69,19 @@ def ast(file):
 @click.argument('file', type=click.File('r'))
 def check_types(file):
     """ Performs type check and displays possible errors """
+    from compiler.types import TypeChecker
+    from compiler.parser import MParser
+    from compiler.scanner import MLexer
 
+    # parse file
     try:
         root = MParser().parse(file.read(), lexer=MLexer(), tracking=True)
-
-        checker = TypeChecker(collect_errors=True)
-        checker.check(root)
     except CompilerError as err:
         return _echo_error(err)
+
+    # check types and collect errors
+    checker = TypeChecker(collect_errors=True)
+    checker.check(root)
 
     # print errors
     for err in checker.errors:
@@ -83,6 +92,10 @@ def check_types(file):
 @click.argument('file', type=click.File('r'))
 def execute(file):
     """ Performs parsing, scanning, type check and execution """
+    from compiler.parser import MParser
+    from compiler.scanner import MLexer
+    from compiler.types import TypeChecker
+    from compiler.interpreter import Interpreter
 
     try:
         # parse file
