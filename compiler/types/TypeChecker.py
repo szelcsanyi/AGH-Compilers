@@ -57,7 +57,7 @@ class TypeChecker:
         if self.check(node.end) != MType.INT:
             self._error(node.line_span, 'Second element in range has to be a integer')
 
-        return MType.RANGE
+        return MType.INT
 
     @check.register
     def _(self, node: AST.InstructionStatement) -> MType:

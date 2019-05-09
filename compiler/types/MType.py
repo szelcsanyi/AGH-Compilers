@@ -31,7 +31,6 @@ class MType:
     INT: ClassVar[MType]
     FLOAT: ClassVar[MType]
     EMPTY_VECTOR: ClassVar[MType]
-    RANGE: ClassVar[MType]
 
 
 # initialize class constants
@@ -41,4 +40,3 @@ MType.STR = MType(str)
 MType.INT = MType(int)
 MType.FLOAT = MType(float)
 MType.EMPTY_VECTOR = MType(None, (0, ))
-MType.RANGE = MType(range)
