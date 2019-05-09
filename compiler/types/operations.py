@@ -28,13 +28,27 @@ PLUS = {
     (MType.FLOAT,   MType.FLOAT):   MType.FLOAT,
 }
 
-MINUS = TIMES = DIVIDE = {
+MINUS = TIMES = {
     (MType.BOOL,    MType.BOOL):    MType.INT,
     (MType.BOOL,    MType.INT):     MType.INT,
     (MType.BOOL,    MType.FLOAT):   MType.FLOAT,
 
     (MType.INT,     MType.BOOL):    MType.INT,
     (MType.INT,     MType.INT):     MType.INT,
+    (MType.INT,     MType.FLOAT):   MType.FLOAT,
+
+    (MType.FLOAT,   MType.BOOL):    MType.FLOAT,
+    (MType.FLOAT,   MType.INT):     MType.FLOAT,
+    (MType.FLOAT,   MType.FLOAT):   MType.FLOAT,
+}
+
+DIVIDE = {
+    (MType.BOOL,    MType.BOOL):    MType.FLOAT,
+    (MType.BOOL,    MType.INT):     MType.FLOAT,
+    (MType.BOOL,    MType.FLOAT):   MType.FLOAT,
+
+    (MType.INT,     MType.BOOL):    MType.FLOAT,
+    (MType.INT,     MType.INT):     MType.FLOAT,
     (MType.INT,     MType.FLOAT):   MType.FLOAT,
 
     (MType.FLOAT,   MType.BOOL):    MType.FLOAT,
