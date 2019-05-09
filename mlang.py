@@ -110,7 +110,7 @@ def execute(file):
     except CompilerError as err:
         return _echo_error(err)
 
-    if result:
+    if result is not None:
         click.echo(f"Execution returned: {result}")
 
 
