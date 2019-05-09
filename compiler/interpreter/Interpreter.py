@@ -2,7 +2,7 @@ from typing import Any, Tuple
 
 import numpy as np
 
-from compiler.interpreter.interuptions import BreakInterruption, ContinueInterruption
+from compiler.interpreter.interuptions import BreakInterruption, ContinueInterruption, ReturnInterruption
 from compiler.interpreter.operations import OPERATIONS
 from compiler.parser import AST
 from compiler.utils import SymbolTable, method_dispatch, CompilerError
@@ -14,8 +14,16 @@ class Interpreter:
     def __init__(self):
         self.memory = SymbolTable()
 
+    def execute_with_return(self, node: AST.Node):
+        """ Executes given AST tree and catches return interruption """
+        try:
+            return self.execute(node)
+        except ReturnInterruption as err:
+            return err.value
+
     @method_dispatch
     def execute(self, node: AST.Node) -> Any:
+        """ Executes given AST tree """
         raise NotImplementedError(f'There is no execution implemented for {node.__class__}')
 
     # ==============================================

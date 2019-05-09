@@ -105,10 +105,13 @@ def execute(file):
         TypeChecker().check(root)
 
         # execute
-        Interpreter().execute(root)
+        result = Interpreter().execute_with_return(root)
 
     except CompilerError as err:
         return _echo_error(err)
+
+    if result:
+        click.echo(f"Execution returned: {result}")
 
 
 if __name__ == '__main__':
