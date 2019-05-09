@@ -15,7 +15,7 @@ def raise_operation(err: Type[Exception]) -> Callable:
 
 def extended_add(a: Any, b: Any) -> Any:
     """ Add operation extended with str support """
-    if a is str or b is str:
+    if isinstance(a, str) or isinstance(b, str):
         a = str(a)
         b = str(b)
     return a + b
