@@ -65,9 +65,9 @@ def ast(file):
     click.echo(ASTPrinter().generate(root))
 
 
-@cli.command('check-types', short_help='Performs type check')
+@cli.command('types', short_help='Performs type check')
 @click.argument('file', type=click.File('r'))
-def check_types(file):
+def types(file):
     """ Performs type check and displays possible errors """
     from compiler.types import TypeChecker
     from compiler.parser import MParser
