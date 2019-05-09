@@ -71,12 +71,6 @@ class TypeChecker:
         for a in node.arguments:
             self.check(a)
 
-        # check number of arguments
-        if node.name in ['break', 'continue'] and len(node.arguments):
-            self._error(node.line_span, f'Instruction {node.name} expects no arguments')
-        if node.name in ['return'] and len(node.arguments) != 1:
-            self._error(node.line_span, f'Instruction {node.name} expects exactly one argument, while {len(node.arguments)} has been found')
-
         return MType.NONE
 
     def _check_normal_operators(self, node: AST.OperatorExpression, types: List[MType]) -> MType:
