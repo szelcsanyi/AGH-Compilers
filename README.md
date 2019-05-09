@@ -79,21 +79,21 @@ r = a != b
 ### IF statement
 ```python
 if (a > b)
-    print('Yes');
+    print "Yes";
 
 if (a > b) {
-    print('Yes');
+    print "Yes";
 }
 
 if (a > b)
-    print('Yes');
+    print "Yes";
 else
-    print('No');
+    print "No";
 
 if (a > b) {
-    print('Yes');
+    print "Yes";
 } else {
-    print('No');
+    print "No";
 }
 ```
 
@@ -109,10 +109,10 @@ while (a > b) {
 
 # for (range) loops
 for i = 1:5
-    print(i);
+    print i;
 
 for i = 1:5 {
-    print(i);
+    print i;
 }
 
 # break and continue keywords
@@ -128,5 +128,5 @@ while(a > b) {
 ### Built-in instructions
 ```python
 print a, b, c;       # prints to stdout, acepts any amount of arguments 
-return a;            # nothing for now xD
+return a;            # terminates program with given value as result
 ```
