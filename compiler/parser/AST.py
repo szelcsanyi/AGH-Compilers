@@ -1,5 +1,5 @@
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, List, Optional, Tuple
 
 
@@ -43,34 +43,9 @@ class RangeExpression(Expression):
 
 
 @dataclass
-class ScalarOperatorExpression(Expression):
+class OperatorExpression(Expression):
     operator: str
-    left_expression: Expression
-    right_expression: Expression
-
-
-@dataclass
-class EqualOperatorExpression(Expression):
-    operator: str
-    left_expression: Expression
-    right_expression: Expression
-
-
-@dataclass
-class MatrixOperatorExpression(Expression):
-    operator: str
-    left_expression: Expression
-    right_expression: Expression
-
-
-@dataclass
-class TransposeExpression(Expression):
-    expression: Expression
-
-
-@dataclass
-class UnaryMinusExpression(Expression):
-    expression: Expression
+    expressions: List[Expression]
 
 
 @dataclass

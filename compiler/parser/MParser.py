@@ -81,11 +81,11 @@ def MParser():
 
     def p_expression_unary_minus(p):
         """ expression : MINUS expression %prec UNARY_MINUS """
-        p[0] = AST.UnaryMinusExpression(p.linespan(0), p[2])
+        p[0] = AST.OperatorExpression(p.linespan(0), 'u-', [p[2]])
 
-    def p_expression_transpose(p):
+    def p_expression_right_unary_operator(p):
         """ expression : expression APOSTROPHE """
-        p[0] = AST.TransposeExpression(p.linespan(0), p[1])
+        p[0] = AST.OperatorExpression(p.linespan(0), p[2], [p[1]])
 
     def p_expression_binary_operator(p):
         """ expression : expression PLUS expression
@@ -96,22 +96,14 @@ def MParser():
                        | expression LESS expression
                        | expression GREATER_EQUAL expression
                        | expression LESS_EQUAL expression
-        """
-        p[0] = AST.ScalarOperatorExpression(p.linespan(0), p[2], p[1], p[3])
-
-    def p_expression_equal_operator(p):
-        """ expression : expression EQUALS expression
+                       | expression EQUALS expression
                        | expression NOT_EQUALS expression
-        """
-        p[0] = AST.EqualOperatorExpression(p.linespan(0), p[2], p[1], p[3])
-
-    def p_expression_matrix_operator(p):
-        """ expression : expression DOT_PLUS expression
+                       | expression DOT_PLUS expression
                        | expression DOT_MINUS expression
                        | expression DOT_TIMES expression
                        | expression DOT_DIVIDE expression
         """
-        p[0] = AST.MatrixOperatorExpression(p.linespan(0), p[2], p[1], p[3])
+        p[0] = AST.OperatorExpression(p.linespan(0), p[2], [p[1], p[3]])
 
     def p_expression_function(p):
         """ expression : function BRACKET_ROUND_L comma_list BRACKET_ROUND_R """

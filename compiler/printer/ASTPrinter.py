@@ -53,24 +53,8 @@ class ASTPrinter:
         return 'RANGE'
 
     @_get_name.register
-    def _(self, node: AST.ScalarOperatorExpression) -> str:
+    def _(self, node: AST.OperatorExpression) -> str:
         return node.operator
-
-    @_get_name.register
-    def _(self, node: AST.EqualOperatorExpression) -> str:
-        return node.operator
-
-    @_get_name.register
-    def _(self, node: AST.MatrixOperatorExpression) -> str:
-        return node.operator
-
-    @_get_name.register
-    def _(self, node: AST.TransposeExpression) -> str:
-        return 'TRANSPOSE'
-
-    @_get_name.register
-    def _(self, node: AST.UnaryMinusExpression) -> str:
-        return '-'
 
     @_get_name.register
     def _(self, node: AST.FunctionExpression) -> str:
@@ -136,24 +120,8 @@ class ASTPrinter:
         return [node.begin, node.end]
 
     @_get_children.register
-    def _(self, node: AST.ScalarOperatorExpression) -> List[AST.Node]:
-        return [node.left_expression, node.right_expression]
-
-    @_get_children.register
-    def _(self, node: AST.EqualOperatorExpression) -> List[AST.Node]:
-        return [node.left_expression, node.right_expression]
-
-    @_get_children.register
-    def _(self, node: AST.MatrixOperatorExpression) -> List[AST.Node]:
-        return [node.left_expression, node.right_expression]
-
-    @_get_children.register
-    def _(self, node: AST.TransposeExpression) -> List[AST.Node]:
-        return [node.expression]
-
-    @_get_children.register
-    def _(self, node: AST.UnaryMinusExpression) -> List[AST.Node]:
-        return [node.expression]
+    def _(self, node: AST.OperatorExpression) -> List[AST.Node]:
+        return node.expressions
 
     @_get_children.register
     def _(self, node: AST.FunctionExpression) -> List[AST.Node]:
