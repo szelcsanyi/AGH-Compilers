@@ -56,13 +56,14 @@ GREATER = LESSER = GREATER_OR_EQUAL = LESSER_OR_EQUAL = {
     (MType.FLOAT,   MType.FLOAT):   MType.BOOL,
 }
 
-SCALAR_OPERATORS = {
-    '+': PLUS,
-    '-': MINUS,
-    '*': TIMES,
-    '/': DIVIDE,
-    '>': GREATER,
-    '<': LESSER,
-    '>=': GREATER_OR_EQUAL,
-    '<=': LESSER_OR_EQUAL
+OPERATIONS = {
+    'u-':   UNARY_MINUS,
+    '+':    PLUS,
+    '-':    MINUS,
+    '*':    TIMES,
+    '/':    DIVIDE,
+    '>':    GREATER,
+    '<':    LESSER,
+    '>=':   GREATER_OR_EQUAL,
+    '<=':   LESSER_OR_EQUAL
 }

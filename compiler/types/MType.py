@@ -18,11 +18,11 @@ class MType:
         return len(self.shape) > 1
 
     def __repr__(self):
-        repr = self.type.__name__ if self.type else 'None'
+        rep = self.type.__name__ if self.type else 'None'
         if not self.is_scalar():
             shape = ['*' if d is None else str(d) for d in iter(self.shape)]
-            repr += '[' + ','.join(shape) + ']'
-        return repr
+            rep += '[' + ','.join(shape) + ']'
+        return rep
 
     # class constants
     NONE: ClassVar[MType]
@@ -31,6 +31,7 @@ class MType:
     INT: ClassVar[MType]
     FLOAT: ClassVar[MType]
     EMPTY_VECTOR: ClassVar[MType]
+    RANGE: ClassVar[MType]
 
 
 # initialize class constants
@@ -40,3 +41,4 @@ MType.STR = MType(str)
 MType.INT = MType(int)
 MType.FLOAT = MType(float)
 MType.EMPTY_VECTOR = MType(None, (0, ))
+MType.RANGE = MType(range)
