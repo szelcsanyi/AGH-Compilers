@@ -1,6 +1,6 @@
 import unittest
 
-from compiler import MScanner, LexerError
+from compiler.scanner import MScanner, LexerError
 
 
 class TestMScanner(unittest.TestCase):

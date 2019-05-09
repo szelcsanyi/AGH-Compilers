@@ -1,4 +1,4 @@
-from compiler import MType
+from compiler.types import MType
 
 UNARY_MINUS = {
     MType.BOOL:   MType.INT,

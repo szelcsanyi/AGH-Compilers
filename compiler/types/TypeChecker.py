@@ -1,10 +1,10 @@
 """ Type checker module """
 from typing import Tuple
 
-from compiler import AST, SymbolTable
-from compiler.MType import MType
-from compiler.type_tables import SCALAR_OPERATORS, UNARY_MINUS
-from compiler.utils import method_dispatch, CompilerError
+from compiler.parser import AST
+from compiler.types.MType import MType
+from compiler.types.operations import SCALAR_OPERATORS, UNARY_MINUS
+from compiler.utils import method_dispatch, CompilerError, SymbolTable
 
 
 class TypeChecker:

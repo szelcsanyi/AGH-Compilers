@@ -3,9 +3,9 @@ from typing import Any, Tuple
 
 import numpy as np
 
-from compiler import AST, SymbolTable
-from compiler.execution_tables import OPERATORS
-from compiler.utils import method_dispatch, CompilerError
+from compiler.parser import AST
+from compiler.interpreter.operations import OPERATIONS
+from compiler.utils import method_dispatch, CompilerError, SymbolTable
 
 
 class Interpreter:
@@ -42,21 +42,21 @@ class Interpreter:
             left = str(left)
             right = str(right)
 
-        return OPERATORS[node.operator](left, right)
+        return OPERATIONS[node.operator](left, right)
 
     @execute.register
     def _(self, node: AST.EqualOperatorExpression) -> Any:
         left = self.execute(node.left_expression)
         right = self.execute(node.right_expression)
 
-        return OPERATORS[node.operator](left, right)
+        return OPERATIONS[node.operator](left, right)
 
     @execute.register
     def _(self, node: AST.MatrixOperatorExpression) -> np.ndarray:
         left = self.execute(node.left_expression)
         right = self.execute(node.right_expression)
 
-        return OPERATORS[node.operator](left, right)
+        return OPERATIONS[node.operator](left, right)
 
     @execute.register
     def _(self, node: AST.TransposeExpression) -> np.ndarray:
@@ -74,7 +74,7 @@ class Interpreter:
         if node.name in ['zeros', 'ones']:
             args = [tuple(args)]
 
-        return OPERATORS[node.name](*args)
+        return OPERATIONS[node.name](*args)
 
     # ==============================================
     #   VARIABLES

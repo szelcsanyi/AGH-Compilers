@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-from compiler import CompilerError
+from compiler.utils import CompilerError
 
 
 def MLexer():

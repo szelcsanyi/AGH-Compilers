@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import List
 
 from colored import stylize, fg
 from tree_format import format_tree
 
-from compiler import AST
+from compiler.parser import AST
 from compiler.utils import method_dispatch
 
 

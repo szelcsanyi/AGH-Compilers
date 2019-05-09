@@ -1,5 +1,7 @@
 from functools import singledispatch, update_wrapper
 
+from .SymbolTable import SymbolTable
+
 
 def method_dispatch(func):
     """

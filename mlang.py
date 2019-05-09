@@ -1,7 +1,12 @@
 import click
 from tabulate import tabulate
 
-from compiler import MScanner, MParser, MLexer, CompilerError, ASTPrinter, TypeChecker, Interpreter
+from compiler.interpreter import Interpreter
+from compiler.parser.MParser import MParser
+from compiler.printer import ASTPrinter
+from compiler.scanner import MScanner, MLexer
+from compiler.types import TypeChecker
+from compiler.utils import CompilerError
 
 
 def _echo_error(err):

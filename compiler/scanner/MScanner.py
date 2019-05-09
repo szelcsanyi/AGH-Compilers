@@ -1,4 +1,4 @@
-from compiler import MLexer
+from compiler.scanner import MLexer
 
 
 class MScanner:

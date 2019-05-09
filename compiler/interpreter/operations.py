@@ -2,7 +2,7 @@ import operator
 
 import numpy as np
 
-OPERATORS = {
+OPERATIONS = {
     '+':        operator.add,
     '-':        operator.sub,
     '*':        operator.mul,
