@@ -134,9 +134,11 @@ class TypeChecker:
     
     @check.register
     def _(self, node: AST.FunctionExpression) -> MType:
-        # for now all functions have the same arguments and result type
-
         arg_types = [self.check(a) for a in node.arguments]
+
+        # function 'eye' accepts exactly two arguments
+        if node.name == 'eye' and len(arg_types) != 2:
+            self._error(node.line_span, f'Function eye expects exactly two arguments, while {len(arg_types)} were found')
 
         # check types
         for i, arg in enumerate(arg_types, 1):

@@ -23,12 +23,16 @@ s1 = "Hello world";   # string
 
 ### Matrix initialization
 ```python
+# 'zeros' and 'ones' accepts any number of arguments
 A = zeros(5);         # create vector of size 5 filled with zeros
 B = ones(7, 4);       # create 7x4 matrix filled with ones
-C = eye(10, 10);      # create 10x10 matrix filled with ones on diagonal and zeros elsewhere
+C = zeros(1, 2, 3);   # create 1x2x3 matrix filled with zeros
 
-D = [1, 2, 3, 4]      # vector of size 4
-E = [[1, 2, 3],       # matrix of size 2x3
+# eye accepts exactly two arguments
+D = eye(10, 8);      # create 10x8 matrix filled with ones on diagonal and zeros elsewhere
+
+E = [1, 2, 3, 4]      # vector of size 4
+F = [[1, 2, 3],       # matrix of size 2x3
      [4, 5, 6]]
 ```
 
