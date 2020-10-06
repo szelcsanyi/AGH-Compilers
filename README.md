@@ -50,10 +50,10 @@ r -= a                # assignment with subtraction
 r *= a                # assignment with multiplication
 r /= a                # assignment with division
 
-r = a > b             # comparision: greater
-r = a < b             # comparision: lesser
-r = a >= b            # comparision: greater or equal
-r = a <= b            # comparision: lesser or equal
+r = a > b             # comparison: greater
+r = a < b             # comparison: lesser
+r = a >= b            # comparison: greater or equal
+r = a <= b            # comparison: lesser or equal
 ```
 
 ### Matrix operations
